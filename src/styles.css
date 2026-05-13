@@ -1,0 +1,119 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --font-display: "Cinzel", serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.18 0.06 300);
+  --foreground: oklch(0.97 0.02 320);
+  --card: oklch(0.24 0.08 300);
+  --card-foreground: oklch(0.97 0.02 320);
+  --primary: oklch(0.72 0.22 340);
+  --primary-foreground: oklch(0.15 0.05 300);
+  --secondary: oklch(0.32 0.1 295);
+  --secondary-foreground: oklch(0.97 0.02 320);
+  --muted: oklch(0.28 0.06 295);
+  --muted-foreground: oklch(0.78 0.05 320);
+  --accent: oklch(0.78 0.18 60);
+  --accent-foreground: oklch(0.18 0.06 300);
+  --border: oklch(0.45 0.12 320 / 0.4);
+  --ring: oklch(0.72 0.22 340);
+
+  --gradient-sky: linear-gradient(180deg, oklch(0.78 0.12 30) 0%, oklch(0.62 0.18 350) 45%, oklch(0.32 0.14 300) 100%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.72 0.22 340), oklch(0.62 0.2 300));
+  --gradient-card: linear-gradient(160deg, oklch(0.28 0.1 300 / 0.8), oklch(0.2 0.08 295 / 0.85));
+  --shadow-glow: 0 0 60px oklch(0.72 0.22 340 / 0.45);
+  --shadow-card: 0 25px 60px -20px oklch(0.1 0.05 300 / 0.7);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0.02em; }
+}
+
+@layer utilities {
+  .gradient-sky { background: var(--gradient-sky); }
+  .gradient-primary { background: var(--gradient-primary); }
+  .gradient-card { background: var(--gradient-card); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .text-gradient {
+    background: linear-gradient(135deg, oklch(0.95 0.05 320), oklch(0.78 0.18 340));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Flip card - pure CSS */
+.flip-card { perspective: 1200px; }
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner,
+.flip-card.is-flipped .flip-card-inner { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.flip-face-back { transform: rotateY(180deg); }
+
+/* Petal float */
+@keyframes petal-fall {
+  0% { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: translate3d(20vw,110vh,0) rotate(360deg); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  width: 14px; height: 14px;
+  background: radial-gradient(circle at 30% 30%, oklch(0.92 0.08 350), oklch(0.7 0.18 340));
+  border-radius: 80% 0 80% 0;
+  animation: petal-fall linear infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px oklch(0.8 0.18 340 / 0.5));
+}
+
+@keyframes float-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.float-slow { animation: float-slow 6s ease-in-out infinite; }
+
+@keyframes glow-pulse { 0%,100%{box-shadow:0 0 30px oklch(0.72 0.22 340 / 0.4)} 50%{box-shadow:0 0 60px oklch(0.72 0.22 340 / 0.7)} }
+.glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
